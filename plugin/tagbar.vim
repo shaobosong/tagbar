@@ -84,9 +84,9 @@ function! s:setup_options() abort
         endif
     endif
     let options = [
-        \ ['autoclose', 0],
+        \ ['autoclose', 1],
         \ ['autoclose_netrw', 0],
-        \ ['autofocus', 0],
+        \ ['autofocus', 1],
         \ ['autopreview', 0],
         \ ['autoshowtag', 0],
         \ ['case_insensitive', 0],
@@ -105,18 +105,18 @@ function! s:setup_options() abort
         \ ['highlight_method', 'nearest-stl'],
         \ ['ignore_anonymous', 0],
         \ ['no_autocmds', 0],
-        \ ['position', default_pos],
+        \ ['position', 'topleft vertical'],
         \ ['previewwin_pos', previewwin_pos],
         \ ['scopestrs', {}],
-        \ ['scrolloff', 0],
+        \ ['scrolloff', 5],
         \ ['show_balloon', 1],
         \ ['show_data_type', 0],
         \ ['show_visibility', 1],
-        \ ['show_linenumbers', 0],
+        \ ['show_linenumbers', 1],
         \ ['show_tag_count', 0],
         \ ['show_tag_linenumbers', 0],
         \ ['singleclick', 0],
-        \ ['sort', 1],
+        \ ['sort', 0],
         \ ['systemenc', &encoding],
         \ ['vertical', 0],
         \ ['width', 40],
@@ -144,7 +144,7 @@ endif
 
 function! s:setup_keymaps() abort
     let keymaps = [
-        \ ['jump',          '<CR>'],
+        \ ['jump',          ['o', '<CR>']],
         \ ['preview',       'p'],
         \ ['previewwin',    'P'],
         \ ['nexttag',       '<C-N>'],
@@ -154,7 +154,7 @@ function! s:setup_keymaps() abort
         \
         \ ['openfold',      ['+', '<kPlus>', 'zo']],
         \ ['closefold',     ['-', '<kMinus>', 'zc']],
-        \ ['togglefold',    ['o', 'za']],
+        \ ['togglefold',    ['f', 'za']],
         \ ['openallfolds',  ['*', '<kMultiply>', 'zR']],
         \ ['closeallfolds', ['=', 'zM']],
         \ ['incrementfolds',  ['zr']],
