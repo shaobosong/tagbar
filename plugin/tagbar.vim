@@ -201,7 +201,5 @@ command! -nargs=0 TagbarJump   call tagbar#jump()
 command! -nargs=0 TagbarJumpPrev      call tagbar#jumpToNearbyTag(-1)
 command! -nargs=0 TagbarJumpNext      call tagbar#jumpToNearbyTag(1)
 
-nnoremap <silent>gt :<C-U>TagbarToggle<CR>
-
 " Modeline {{{1
 " vim: ts=8 sw=4 sts=4 et foldenable foldmethod=marker foldcolumn=1
