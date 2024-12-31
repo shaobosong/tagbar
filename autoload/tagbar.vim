@@ -2356,6 +2356,7 @@ endfunction
 function! s:JumpToTag(stay_in_tagbar, ...) abort
     let taginfo = a:0 > 0 ? a:1 : s:GetTagInfo(line('.'), 1)
     let force_lazy_scroll = a:0 > 1 ? a:2 : 0
+    let hold_window = a:0 > 2 ? a:3 : 0
 
     if empty(taginfo) || !taginfo.isNormalTag()
         " Cursor line not on a tag. Check if this is the start of a foldable
@@ -2385,7 +2386,9 @@ function! s:JumpToTag(stay_in_tagbar, ...) abort
         let autoclose = 0
     endif
 
-    call s:GotoFileWindow(taginfo.fileinfo)
+    if !hold_window
+        call s:GotoFileWindow(taginfo.fileinfo)
+    endif
 
     " Mark current position so it can be jumped back to
     mark '
@@ -3245,6 +3248,7 @@ function! s:JumpToNearbyTag(direction, request, flags) abort
 
     let lnum = a:direction > 0 ? line('.') + 1 : line('.') - 1
     let lazy_scroll = a:flags =~# 's' ? 0 : 1
+    let hold_window = 1
 
     let tag = s:GetNearbyTag(a:request, 1, lnum, a:direction, 1)
 
@@ -3258,7 +3262,7 @@ function! s:JumpToNearbyTag(direction, request, flags) abort
         return
     endif
 
-    call s:JumpToTag(1, tag, lazy_scroll)
+    call s:JumpToTag(1, tag, lazy_scroll, hold_window)
 endfunction
 
 " s:GetTagInfo() {{{2
@@ -3834,6 +3838,9 @@ endfunction
 " tagbar#Update() {{{2
 " Trigger an AutoUpdate() of the currently opened file
 function! tagbar#Update() abort
+    if s:init_done == 0
+        call s:Init(0)
+    endif
     call s:AutoUpdate(fnamemodify(expand('%'), ':p'), 0)
 endfunction
 
@@ -4096,6 +4103,9 @@ endfunction
 
 " tagbar#jump() {{{2
 function! tagbar#jump() abort
+    if s:init_done == 0
+        call tagbar#Update()
+    endif
     if &filetype !=# 'tagbar'
         " Not in tagbar window - ignore this function call
         return
@@ -4110,6 +4120,7 @@ endfun
 "   [flags] = list of flags (as a string) to control behavior
 "       's' - use the g:tagbar_scroll_offset setting when jumping
 function! tagbar#jumpToNearbyTag(direction, ...) abort
+    call tagbar#Update()
     let search_method = a:0 >= 1 ? a:1 : 'nearest-stl'
     let flags = a:0 >= 2 ? a:2 : ''
 
